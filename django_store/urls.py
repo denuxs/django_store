@@ -4,10 +4,14 @@ from rest_framework import routers, permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenBlacklistView
 )
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from products.viewsets import ProductViewSet, CategoryViewSet
-from users.viewsets import UserViewSet
+from users.viewsets import UserViewSet, RegisterApiView
 
 router = routers.DefaultRouter()
 router.register(r"categories", CategoryViewSet)
@@ -28,9 +32,13 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include(router.urls)),
-    path("auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/", include(router.urls)),
+    
+    path("api/auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path('api/auth/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
+    path("api/auth/register/", RegisterApiView.as_view(), name="auth_register"),
+
     # swagger
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
@@ -42,3 +50,7 @@ urlpatterns = [
     ),
     # path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
