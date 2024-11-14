@@ -1,6 +1,13 @@
 # Django Fake Store API
 
-Simple API REST para tienda online
+Simple API REST para tienda online (En desarrollo)
+
+API Doc: https://denlop.pythonanywhere.com/swagger
+
+Frontend: https://amazing-crumble-40f260.netlify.app
+
+* username: admin@localhost.com
+* password: endurance
 
 ### Features
 
@@ -38,4 +45,5 @@ python manage.py runserver
 
 ### TO DO
 
+* bugfix api swagger register
 * Unit testing
