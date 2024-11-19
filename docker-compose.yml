@@ -1,0 +1,6 @@
+services:
+  web:
+    build: .
+    container_name: django_api
+    ports:
+      - '8000:8000'
